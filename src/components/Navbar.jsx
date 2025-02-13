@@ -15,7 +15,7 @@ export default function Navbar() {
           >
             <div className="relative">
               <div className="absolute -inset-2 bg-pink-500/10 rounded-full blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              <span className="text-2xl animate-float ">💘</span>
+              <span className="text-2xl animate-float hidden sm:inline-block">💘</span>
             </div>
             <h1 className="text-sm sm:text-xl font-bold bg-gradient-to-r from-pink-400 to-purple-500 dark:from-pink-300 dark:to-purple-400 bg-clip-text text-transparent">
               Instagram Valentine
