@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
 import { GithubIcon, InstagramIcon } from "./icons";
 import ThemeBtn from "./themeBtn";
 
