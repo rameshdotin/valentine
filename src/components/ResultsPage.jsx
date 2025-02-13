@@ -50,7 +50,7 @@ function ResultsPage() {
     : funnyQuotes[Math.floor(Math.random() * funnyQuotes.length)];
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 ">
+    <div className="min-h-screen flex items-center justify-center">
       <div className="relative p-8 bg-white dark:bg-slate-800 rounded-3xl shadow-2xl hover:shadow-3xl transition-shadow duration-300 max-w-md w-full mx-4 group/container">
         {/* Floating particles background */}
         <div className="absolute inset-0 overflow-hidden rounded-3xl">
