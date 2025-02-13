@@ -4,10 +4,11 @@ import LoadingHeart from "./LoadingHeart";
 
 function Home() {
   const [isLoading, setIsLoading] = useState(false);
+  const [username, setUser] = useState("");
   const navigate = useNavigate();
-
   const handleSubmit = (e) => {
     e.preventDefault();
+    localStorage.setItem("user", username);
     setIsLoading(true);
 
     // Simulate API call
@@ -40,6 +41,8 @@ function Home() {
                 <div className="relative">
                   <input
                     type="text"
+                    value={username}
+                    onChange={(e) => setUser(e.target.value)}
                     placeholder="Instagram Username"
                     className="w-full px-5 py-4 rounded-xl border border-gray-200 dark:border-slate-600 bg-white dark:bg-slate-700 text-gray-800 dark:text-slate-100 placeholder-gray-400 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-pink-500 dark:focus:ring-pink-400 focus:border-transparent transition-all duration-200"
                     required

@@ -1,48 +1,47 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ResultsPage() {
   const [attempts, setAttempts] = useState(0);
   const [showMeme, setShowMeme] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const loginUser = localStorage.getItem("user");
+  const navigate = useNavigate();
 
-  // Load attempts from localStorage on mount
   useEffect(() => {
-    const savedAttempts = localStorage.getItem("valentineAttempts") || 0;
+    if (!loginUser) {
+      navigate("/");
+    }
+    const savedAttempts = localStorage.getItem(`${loginUser}Attempts`) || 0;
     setAttempts(Number(savedAttempts));
     setShowMeme(Number(savedAttempts) > 5);
-  }, []);
+  }, [loginUser, navigate]);
 
   const funnyQuotes = [
     "Our algorithms detected your Valentine... is your pet! 🐾",
     "Surprise! It's your WiFi router - it's always there for you 📶",
     "Drumroll... It's your reflection! 💁♂️ Love yourself first!",
-    "The stars say: Your true Valentine is pizza 🍕 Forever cheesy!",
     "Plot twist! It's your childhood imaginary friend 👻",
     "Big reveal: Your bed pillow - never leaves your side 🛌",
   ];
 
   const memeImages = [
-    // Popular "Distracted Boyfriend" meme template
     "/Chala-ja-BSDK.webp",
-
-    // Classic "Success Kid" meme
-    // "https://i.imgflip.com/1bh3.jpg",
-
-    // Popular "Drake Hotline Bling" template
     "/meme-image.webp",
-
-    // "Woman Yelling at a Cat" meme
+    "/babaji.jpg",
     "https://i.imgflip.com/2hgfw.jpg",
   ];
 
   const handleTryAgain = () => {
+    setIsLoading(true);
     const newAttempts = attempts + 1;
-    localStorage.setItem("valentineAttempts", newAttempts);
 
-    if (newAttempts > 5) {
-      setShowMeme(true);
-    }
-
-    window.location.reload();
+    setTimeout(() => {
+      localStorage.setItem(`${loginUser}Attempts`, newAttempts);
+      setAttempts(newAttempts);
+      setShowMeme(newAttempts > 4);
+      setIsLoading(false);
+    }, 1500); // Simulated loading delay
   };
 
   const currentContent = showMeme
@@ -79,7 +78,7 @@ function ResultsPage() {
           </div>
 
           {/* Gradient title with shine effect */}
-          <h2 className=" text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 dark:from-pink-400 dark:to-purple-400 bg-clip-text text-transparent tracking-tight relative inline-block">
+          <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 dark:from-pink-400 dark:to-purple-400 bg-clip-text text-transparent tracking-tight relative inline-block">
             {showMeme ? "Seriously? Again?!" : "Results Are In!"}
             <span className="absolute -inset-1 bg-gradient-to-r from-white/30 to-transparent dark:from-black/30 opacity-0 group-hover/container:opacity-100 transition-opacity duration-300 rounded-full" />
           </h2>
@@ -93,9 +92,6 @@ function ResultsPage() {
                   alt="Funny meme"
                   className="rounded-xl border-4 border-pink-100 dark:border-slate-700 mx-auto shadow-lg transform hover:scale-105 transition-transform duration-300"
                 />
-                {/* <div className="absolute -top-4 -right-4 rotate-12 bg-yellow-100 dark:bg-slate-700 px-3 py-1 rounded-lg text-sm shadow-sm">
-                  🔥 Fresh Meme!
-                </div> */}
               </div>
               <p className="mt-4 text-lg text-slate-600 dark:text-slate-300 font-handwriting">
                 Ja na ❤️De
@@ -110,14 +106,36 @@ function ResultsPage() {
           {/* Interactive button */}
           <button
             onClick={handleTryAgain}
-            className="cursor-pointer mt-6 px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-2xl hover:rounded-xl transition-all duration-300 relative overflow-hidden group/button transform hover:scale-105 shadow-lg hover:shadow-xl"
+            disabled={isLoading}
+            className="cursor-pointer mt-6 px-8 py-4 bg-gradient-to-r from-pink-500 to-purple-500 hover:from-pink-600 hover:to-purple-600 text-white rounded-2xl hover:rounded-xl transition-all duration-300 relative overflow-hidden group/button transform hover:scale-105 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            {/* Shine effect */}
             <div className="absolute inset-0 opacity-0 group-hover/button:opacity-30 transition-opacity duration-300 bg-gradient-to-r from-white/30 via-white/60 to-white/30 animate-shine" />
-
-            {/* Button content */}
             <span className="relative text-nowrap z-10 flex items-center justify-center gap-2 text-sm sm:text-lg font-semibold">
-              {showMeme ? (
+              {isLoading ? (
+                <>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Scanning Universe...
+                </>
+              ) : showMeme ? (
                 <>
                   <span className="animate-bounce">🥺</span>I Swear, Last Try!
                   <span className="animate-bounce">🥺</span>
