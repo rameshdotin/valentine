@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { GithubIcon, InstagramIcon } from "./icons";
-import ThemeBtn from "./themeBtn";
+import ThemeBtn from "./ThemeBtn";
 
 export default function Navbar() {
   return (
